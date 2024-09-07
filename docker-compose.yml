@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: hotel
+    environment:
+      POSTGRES_USER: postgre
+      POSTGRES_PASSWORD: latifa
+      POSTGRES_DB: hotel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:latest
+    container_name: flyway
+    depends_on:
+      - db
+    environment:
+      FLYWAY_URL: jdbc:postgresql://db:5432/hotel
+      FLYWAY_USER: your_username
+      FLYWAY_PASSWORD: your_password
+    volumes:
+      - ./sql:/flyway/sql
+    entrypoint: ["flyway", "migrate"]
+
+volumes:
+  postgres_data:

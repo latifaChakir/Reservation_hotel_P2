@@ -1,5 +1,5 @@
 package connection;
-
+import org.flywaydb.core.Flyway;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,6 +18,12 @@ public class ConnectionConfig {
 
             connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
             System.out.println("Connexion établie avec succès !");
+            Flyway flyway = Flyway.configure()
+                    .dataSource(DATABASE_URL, USER, PASSWORD)
+                    .locations("classpath:db/migration/V1__initial_tables.sql")
+                    .load();
+
+            flyway.migrate();
         } catch (ClassNotFoundException e) {
             System.out.println("Driver PostgreSQL JDBC non trouvé : " + e.getMessage());
         } catch (SQLException e) {
