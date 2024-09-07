@@ -11,6 +11,11 @@ out/
 .settings
 .springBeans
 .sts4-cache
+.env
+pom.xml
+postgresql-42.7.4.jar
+docker-compose.yml
+
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
