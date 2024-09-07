@@ -1,3 +1,5 @@
+package bean;
+
 public class Chambre {
     private  int numero;
     private  String type;

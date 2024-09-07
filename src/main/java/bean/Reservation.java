@@ -1,3 +1,5 @@
+package bean;
+
 import java.time.LocalDate;
 
 public class Reservation {
@@ -6,7 +8,7 @@ public class Reservation {
     private Chambre chambre;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    public Reservation(int id,Client client, Chambre chambre, LocalDate dateDebut, LocalDate dateFin) {
+    public Reservation(int id, Client client, Chambre chambre, LocalDate dateDebut, LocalDate dateFin) {
         this.client = client;
         this.chambre = chambre;
         this.dateDebut = dateDebut;
