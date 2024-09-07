@@ -6,6 +6,8 @@ out/
 pom.xml
 postgresql-42.7.4.jar
 docker-compose.yml
+Reservation_hotel_P2.iml
+untitled
 
 ### Eclipse ###
 .apt_generated
