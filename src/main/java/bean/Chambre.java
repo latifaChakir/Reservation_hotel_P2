@@ -2,9 +2,9 @@ package bean;
 
 public class Chambre {
     private  int numero;
-    private  String type;
+    private RoomType type;
     private boolean isDisponible;
-    public Chambre(int numero, String type, boolean isDisponible) {
+    public Chambre(int numero, RoomType type, boolean isDisponible) {
         this.numero = numero;
         this.type=type;
         this.isDisponible=isDisponible;
@@ -12,7 +12,7 @@ public class Chambre {
     public int getNumero() {
         return  numero;
     }
-    public String getType() {
+    public RoomType getType() {
         return  type;
     }
     public boolean isDisponible() {
