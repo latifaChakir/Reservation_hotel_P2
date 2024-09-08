@@ -40,4 +40,8 @@ public class Client {
                 ",ClientAdress :" +address+
                 ",ClientPhone :" +phone+ "}";
     }
+
+    public int getId() {
+        return id;
+    }
 }

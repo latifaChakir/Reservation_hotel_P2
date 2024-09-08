@@ -8,7 +8,6 @@ public class ConnectionConfig {
     private static ConnectionConfig instance;
     private Connection connection;
 
-    // Constructeur privé pour Singleton
     private ConnectionConfig() throws SQLException {
         String DATABASE_URL = System.getenv("DATABASE_URL");
         String USER = System.getenv("USER");
@@ -27,7 +26,6 @@ public class ConnectionConfig {
         }
     }
 
-    // Méthode pour obtenir l'instance Singleton
     public static ConnectionConfig getInstance() throws SQLException {
         if (instance == null) {
             instance = new ConnectionConfig();

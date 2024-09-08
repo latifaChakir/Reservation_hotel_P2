@@ -51,10 +51,12 @@ public class ChambreDao {
                 if (rs.next()) {
                     int numero = rs.getInt("numero");
                     String typeStr = rs.getString("type");
-                    boolean disponible = rs.getBoolean("disponible");
+                    boolean disponible = rs.getBoolean("isdisponible");
 
-                    RoomType type = RoomType.valueOf(typeStr.toUpperCase());
-
+                    RoomType type = null;
+                    if (typeStr != null) {
+                        type = RoomType.valueOf(typeStr.toUpperCase());
+                    }
                     chambre = new Chambre(numero, type, disponible);
                 }
             }
