@@ -1,7 +1,6 @@
 package service;
 
 import bean.Chambre;
-import bean.Client;
 import bean.RoomType;
 import repository.impl.ChambreDaoImpl;
 

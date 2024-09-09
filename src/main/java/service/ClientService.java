@@ -11,7 +11,7 @@ public class ClientService {
     private ClientDaoImpl clientDaoImpl;
     private Scanner scanner;
 
-    public ClientService() throws SQLException {
+    public ClientService()  {
         this.clientDaoImpl = new ClientDaoImpl();
         this.scanner = new Scanner(System.in);
     }

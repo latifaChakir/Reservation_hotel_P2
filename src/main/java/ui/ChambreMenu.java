@@ -3,15 +3,18 @@ package ui;
 import bean.Chambre;
 import bean.Client;
 import service.ChambreService;
+import service.ClientService;
 
 import java.util.Scanner;
 
 public class ChambreMenu {
     private ChambreService chambreService;
+    private ClientService clientService;
     private Scanner scanner;
     public ChambreMenu(ChambreService chambreService) {
         this.chambreService = new ChambreService();
         this.scanner = new Scanner(System.in);
+        this.clientService = new ClientService();
     }
     public void chambreMenu()  {
         while (true) {
@@ -19,7 +22,7 @@ public class ChambreMenu {
             System.out.println("2. Update room");
             System.out.println("3. Delete room by id");
             System.out.println("4. Show room by id");
-            System.out.println("5. Exit");
+            System.out.println("5. Menu Reservation");
             System.out.print("Enter your choice: ");
             int choice;
             try {
@@ -44,10 +47,15 @@ public class ChambreMenu {
                     System.out.println("chambre :"+chambre.getNumero()+ ", type :"+chambre.getType());
                     break;
                 case 5:
-                    System.out.println("Goodbye!");
+                    reservationMenu(clientService,chambreService);
                     break;
             }
         }
+    }
+
+    public void reservationMenu(ClientService clientService, ChambreService chambreService) {
+        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService);
+        reservationMenu.reservationMenu();
     }
 
 }
