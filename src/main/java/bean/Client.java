@@ -26,7 +26,7 @@ public class Client {
         this.phone = phone;
     }
 
-    public Client(String name, int age, String address, String phone) {
+    public Client(int id,String name, int age, String address, String phone) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -43,5 +43,21 @@ public class Client {
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }
