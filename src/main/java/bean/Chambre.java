@@ -1,6 +1,7 @@
 package bean;
 
 public class Chambre {
+    private int id;
     private  int numero;
     private RoomType type;
     private boolean isDisponible;
@@ -30,5 +31,9 @@ public class Chambre {
                 + "numero : "+numero+ "," +
                 " type : "+type+ ", " +
                 "isDisponible : "+isDisponible+'}';
+    }
+
+    public int getId() {
+        return id;
     }
 }
