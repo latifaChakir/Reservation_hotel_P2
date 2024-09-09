@@ -6,15 +6,20 @@ import bean.Client;
 import connection.ConnectionConfig;
 import service.ChambreService;
 import service.ClientService;
+import ui.ChambreMenu;
 import ui.ClientMenu;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
         Connection connection = ConnectionConfig.getInstance().getConnection();
 
-        ClientService clientService = new ClientService();
-        ClientMenu clientMenu=new ClientMenu(clientService);
-        clientMenu.clientMenu();
+//        ClientService clientService = new ClientService();
+//        ClientMenu clientMenu=new ClientMenu(clientService);
+//        clientMenu.clientMenu();
+
+        ChambreService chambreService = new ChambreService();
+        ChambreMenu chambreMenu=new ChambreMenu(chambreService);
+        chambreMenu.chambreMenu();
 
 
 

@@ -36,4 +36,8 @@ public class Chambre {
     public int getId() {
         return id;
     }
+
+    public void setId(int chambreId) {
+        this.id = chambreId;
+    }
 }

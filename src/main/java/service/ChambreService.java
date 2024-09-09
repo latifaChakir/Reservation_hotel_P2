@@ -1,37 +1,76 @@
 package service;
 
-
 import bean.Chambre;
+import bean.Client;
+import bean.RoomType;
 import repository.impl.ChambreDaoImpl;
 
-import java.sql.SQLException;
-import java.util.List;
+import java.util.Scanner;
 
 public class ChambreService {
 
-    private ChambreDaoImpl chambreDao;
-
-    public ChambreService() throws SQLException {
-        this.chambreDao = new ChambreDaoImpl();
+    private ChambreDaoImpl chambreDaoImpl;
+    private Scanner scanner;
+    public ChambreService() {
+        this.chambreDaoImpl = new ChambreDaoImpl();
+        this.scanner = new Scanner(System.in);
     }
 
-    public List<Chambre> getAllChambres() throws SQLException {
-        return chambreDao.getAllChambres();
+    public void saveChambre() {
+        System.out.println("enter the number of the room");
+        int chambreNumber = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Enter the type of the room (e.g., SINGLE, DOUBLE, SUITE):");
+        String chambreTypeStr = scanner.nextLine();
+        RoomType chambreType = RoomType.valueOf(chambreTypeStr.toUpperCase());
+        boolean isDisponible=true;
+        Chambre chambre = new Chambre(chambreNumber,chambreType,isDisponible);
+        chambreDaoImpl.saveChambre(chambre);
+    }
+    public Chambre updateChambre() {
+        System.out.println("Enter the ID of the room:");
+        int chambreId = scanner.nextInt();
+        scanner.nextLine();
+
+        Chambre fetchChambre = chambreDaoImpl.getChambreById(chambreId);
+        if (fetchChambre == null) {
+            System.out.println("No room found with ID: " + chambreId);
+            return null;
+        }
+        System.out.println("Current room details:");
+        System.out.println(fetchChambre);
+
+        System.out.println("Enter the new number of the room:");
+        int chambreNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter the new type of the room (e.g., SINGLE, DOUBLE, SUITE):");
+        String chambreTypeStr = scanner.nextLine();
+        RoomType chambreType;
+        try {
+            chambreType = RoomType.valueOf(chambreTypeStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid room type entered.");
+            return null;
+        }
+        System.out.println("Is the room available (true/false)?");
+        boolean isDisponible = scanner.nextBoolean();
+        Chambre updatedChambre = new Chambre(chambreNumber, chambreType, isDisponible);
+        updatedChambre.setId(chambreId);
+
+        chambreDaoImpl.updateChambre(updatedChambre);
+        return updatedChambre;
+    }
+    public void deleteChambre()  {
+        System.out.println("Enter room id: ");
+        int id = scanner.nextInt();
+        chambreDaoImpl.deleteChambre(id);
+    }
+    public Chambre getChambreById() {
+        System.out.println("Enter room id: ");
+        int id = scanner.nextInt();
+        return chambreDaoImpl.getChambreById(id);
     }
 
-    public Chambre getChambreById(int id) throws SQLException {
-        return chambreDao.getChambreById(id);
-    }
 
-    public void saveChambre(Chambre chambre) throws SQLException {
-        chambreDao.saveChambre(chambre);
-    }
-
-    public void updateChambre(Chambre chambre) throws SQLException {
-        chambreDao.updateChambre(chambre);
-    }
-
-    public void deleteChambre(int id) throws SQLException {
-        chambreDao.deleteChambre(id);
-    }
 }

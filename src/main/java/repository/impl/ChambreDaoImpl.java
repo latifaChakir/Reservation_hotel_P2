@@ -1,4 +1,5 @@
 package repository.impl;
+
 import bean.Chambre;
 import bean.RoomType;
 import connection.ConnectionConfig;
@@ -11,7 +12,7 @@ import java.util.List;
 public class ChambreDaoImpl extends ChambreDao {
 
     @Override
-    public List<Chambre> getAllChambres() throws SQLException {
+    public List<Chambre> getAllChambres() {
         List<Chambre> chambres = new ArrayList<>();
         String query = "SELECT * FROM chambre";
 
@@ -27,16 +28,19 @@ public class ChambreDaoImpl extends ChambreDao {
                 RoomType type = null;
                 if (typeStr != null) {
                     type = RoomType.valueOf(typeStr.toUpperCase());
-                }                Chambre chambre = new Chambre(numero, type, disponible);
+                }
+                Chambre chambre = new Chambre(numero, type, disponible);
                 chambres.add(chambre);
             }
+        } catch (SQLException sqlException) {
+            System.out.println("Error fetching chambres: " + sqlException.getMessage());
         }
 
         return chambres;
     }
 
     @Override
-    public Chambre getChambreById(int chambreId) throws SQLException {
+    public Chambre getChambreById(int chambreId) {
         Chambre chambre = null;
         String query = "SELECT * FROM chambre WHERE id = ?";
 
@@ -57,14 +61,16 @@ public class ChambreDaoImpl extends ChambreDao {
                     chambre = new Chambre(numero, type, disponible);
                 }
             }
+        } catch (SQLException sqlException) {
+            System.out.println("Error fetching chambre by ID: " + sqlException.getMessage());
         }
 
         return chambre;
     }
 
     @Override
-    public void saveChambre(Chambre chambre) throws SQLException {
-        String query = "INSERT INTO chambre (numero, type, isdisponible) VALUES (?, ?, ?)";
+    public void saveChambre(Chambre chambre) {
+        String query = "INSERT INTO chambre (numero, type, isdisponible) VALUES (?, ?::chambre_type, ?)";
 
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -72,12 +78,16 @@ public class ChambreDaoImpl extends ChambreDao {
             pstmt.setString(2, chambre.getType().toString());
             pstmt.setBoolean(3, chambre.isDisponible());
             pstmt.executeUpdate();
+
+            System.out.println("Chambre saved successfully!");
+        } catch (SQLException sqlException) {
+            System.out.println("Error saving chambre: " + sqlException.getMessage());
         }
     }
 
     @Override
-    public void updateChambre(Chambre chambre) throws SQLException {
-        String query = "UPDATE chambre SET numero = ?, type = ?, isdisponible = ? WHERE id = ?";
+    public void updateChambre(Chambre chambre) {
+        String query = "UPDATE chambre SET numero = ?, type = ?::chambre_type, isdisponible = ? WHERE id = ?";
 
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -85,18 +95,31 @@ public class ChambreDaoImpl extends ChambreDao {
             pstmt.setString(2, chambre.getType().toString());
             pstmt.setBoolean(3, chambre.isDisponible());
             pstmt.setInt(4, chambre.getId());
-            pstmt.executeUpdate();
+
+            // Execute update and check number of affected rows
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Chambre updated successfully!");
+            } else {
+                System.out.println("No chambre found with ID: " + chambre.getId());
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("Error updating chambre: " + sqlException.getMessage());
         }
     }
 
     @Override
-    public void deleteChambre(int chambreId) throws SQLException {
+    public void deleteChambre(int chambreId) {
         String query = "DELETE FROM chambre WHERE id = ?";
 
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(query)) {
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambreId);
             pstmt.executeUpdate();
+
+            System.out.println("Chambre deleted successfully!");
+        } catch (SQLException sqlException) {
+            System.out.println("Error deleting chambre: " + sqlException.getMessage());
         }
     }
 }
