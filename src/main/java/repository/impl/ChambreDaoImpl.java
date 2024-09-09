@@ -10,18 +10,13 @@ import java.util.List;
 
 public class ChambreDaoImpl extends ChambreDao {
 
-    private Connection conn;
-
-    public ChambreDaoImpl() throws SQLException {
-        this.conn = ConnectionConfig.getInstance().getConnection();
-    }
-
     @Override
     public List<Chambre> getAllChambres() throws SQLException {
         List<Chambre> chambres = new ArrayList<>();
         String query = "SELECT * FROM chambre";
 
-        try (Statement stmt = conn.createStatement();
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
@@ -45,7 +40,8 @@ public class ChambreDaoImpl extends ChambreDao {
         Chambre chambre = null;
         String query = "SELECT * FROM chambre WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambreId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -70,7 +66,8 @@ public class ChambreDaoImpl extends ChambreDao {
     public void saveChambre(Chambre chambre) throws SQLException {
         String query = "INSERT INTO chambre (numero, type, isdisponible) VALUES (?, ?, ?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambre.getNumero());
             pstmt.setString(2, chambre.getType().toString());
             pstmt.setBoolean(3, chambre.isDisponible());
@@ -82,7 +79,8 @@ public class ChambreDaoImpl extends ChambreDao {
     public void updateChambre(Chambre chambre) throws SQLException {
         String query = "UPDATE chambre SET numero = ?, type = ?, isdisponible = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambre.getNumero());
             pstmt.setString(2, chambre.getType().toString());
             pstmt.setBoolean(3, chambre.isDisponible());
@@ -95,7 +93,8 @@ public class ChambreDaoImpl extends ChambreDao {
     public void deleteChambre(int chambreId) throws SQLException {
         String query = "DELETE FROM chambre WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambreId);
             pstmt.executeUpdate();
         }
