@@ -27,13 +27,16 @@ public class ReservationDaoImpl extends ReservationDao {
             ResultSet rs=ps.executeQuery();
             while(rs.next()){
                 Reservation reservation=new Reservation();
-                int id=rs.getInt("id");
+                int reservationId=rs.getInt("id");
                 int clientId=rs.getInt("id_client");
                 int chambreId=rs.getInt("id_chambre");
+                reservation.setDateDebut(rs.getDate("date_debut").toLocalDate());
+                reservation.setDateFin(rs.getDate("date_fin").toLocalDate());
                 Chambre chambre=chambreDaoImpl.getChambreById(chambreId);
                 Client client=clientDaoImpl.getClientById(clientId);
                 reservation.setClient(client);
                 reservation.setChambre(chambre);
+                reservation.setId(reservationId);
                 reservations.add(reservation);
             }
 
@@ -54,11 +57,10 @@ public class ReservationDaoImpl extends ReservationDao {
                 if(rs.next()) {
                     int clientID = rs.getInt("id_client");
                     int roomID = rs.getInt("id_chambre");
-                    String start_date = rs.getString("date_debut");
-                    String end_date = rs.getString("date_fin");
+                    reservation.setDateDebut(rs.getDate("date_debut").toLocalDate());
+                    reservation.setDateFin(rs.getDate("date_fin").toLocalDate());
                     Chambre chambre=chambreDaoImpl.getChambreById(roomID);
                     Client client=clientDaoImpl.getClientById(clientID);
-
                     reservation.setChambre(chambre);
                     reservation.setClient(client);
                 }

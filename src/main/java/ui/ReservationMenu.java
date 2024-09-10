@@ -58,7 +58,7 @@ public class ReservationMenu {
                 case 4:reservationService.getReservationById();
                      break;
                 case 5:
-                    System.out.println("Goodbye!");
+                    reservationService.getAllReservations();
                     break;
                 case 6:
                     clientMenu.clientMenu();

@@ -7,6 +7,7 @@ import Dao.impl.ChambreDaoImpl;
 import Dao.impl.ClientDaoImpl;
 import Dao.impl.ReservationDaoImpl;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class ReservationService {
@@ -14,12 +15,42 @@ public class ReservationService {
     private Scanner scanner;
     private ClientDaoImpl clientDaoImpl;
     private ChambreDaoImpl chambreDaoImpl;
+
     public ReservationService() {
         reservationDaoImpl = new ReservationDaoImpl();
         scanner = new Scanner(System.in);
         clientDaoImpl = new ClientDaoImpl();
         chambreDaoImpl = new ChambreDaoImpl();
     }
+
+    public Chambre trouverChambre(int ChambreId, LocalDate dateDebut, LocalDate dateFin) {
+        List<Chambre> chambres = chambreDaoImpl.getAllChambres();
+        List<Reservation> reservations = reservationDaoImpl.getAllReservations();
+        for (Chambre chambre : chambres) {
+            if (chambre.getId() == ChambreId) {
+                boolean isAvailable = true;
+
+                for (Reservation reservation : reservations) {
+                    if (reservation.getChambre().getId() == ChambreId) {
+                        if (!(dateFin.isBefore(reservation.getDateDebut()) || dateDebut.isAfter(reservation.getDateFin()))) {
+                            System.out.println("La chambre " + ChambreId + " est déjà réservée du " +
+                                    reservation.getDateDebut() + " au " + reservation.getDateFin());
+                            isAvailable = false;
+                            break;
+                        }
+
+                    }
+                }
+                if (isAvailable) {
+                    return chambre;
+                } else {
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
     public Reservation saveReservation() {
         System.out.println("Enter the client id: ");
         int clientId = scanner.nextInt();
@@ -27,28 +58,31 @@ public class ReservationService {
         System.out.println("Enter the room id: ");
         int roomId = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Enter the start date: ");
+        System.out.println("Enter the start date (yyyy-mm-dd): ");
         String startdate = scanner.nextLine();
-        System.out.println("Enter the end date: ");
+        System.out.println("Enter the end date (yyyy-mm-dd): ");
         String endDate = scanner.nextLine();
-        LocalDate endDateParse = LocalDate.parse(endDate);
+
         LocalDate startDateParse = LocalDate.parse(startdate);
-        Chambre chambre_choisis=null;
-        Client client_choisis = null;
+        LocalDate endDateParse = LocalDate.parse(endDate);
+        Chambre chambreChoisie = null;
+        Client clientChoisi = null;
 
         try {
-            chambre_choisis=chambreDaoImpl.getChambreById(roomId);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            client_choisis=clientDaoImpl.getClientById(clientId);
+            clientChoisi = clientDaoImpl.getClientById(clientId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Reservation reservation=new Reservation(client_choisis,chambre_choisis,startDateParse,endDateParse);
+
+        chambreChoisie = trouverChambre(roomId, startDateParse, endDateParse);
+        if (chambreChoisie == null) {
+            System.out.println("Room is not available for the selected dates.");
+            return null;
+        }
+        Reservation reservation = new Reservation(clientChoisi, chambreChoisie, startDateParse, endDateParse);
         return reservationDaoImpl.saveReservation(reservation);
     }
+
     public void updateReservation() {
         System.out.println("Enter the reservation id: ");
         int reservationId = scanner.nextInt();
@@ -56,39 +90,47 @@ public class ReservationService {
         System.out.println("Enter the client id: ");
         int clientId = scanner.nextInt();
         scanner.nextLine();
-        Client fetchedclient=null;
+        Client fetchedClient = null;
         try {
-            fetchedclient=clientDaoImpl.getClientById(clientId);
+            fetchedClient = clientDaoImpl.getClientById(clientId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Enter the room id: ");
+
+        System.out.println("Enter the room number: ");
         int roomId = scanner.nextInt();
         scanner.nextLine();
-        Chambre fetchedchambre=null;
-        try {
-            fetchedchambre=chambreDaoImpl.getChambreById(roomId);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Enter the start date: ");
+        System.out.println("Enter the start date (yyyy-mm-dd): ");
         String startdate = scanner.nextLine();
-        System.out.println("Enter the end date: ");
+        System.out.println("Enter the end date (yyyy-mm-dd): ");
         String endDate = scanner.nextLine();
-        LocalDate endDateParse = LocalDate.parse(endDate);
+
         LocalDate startDateParse = LocalDate.parse(startdate);
-        Reservation reservation =new Reservation(fetchedclient,fetchedchambre,startDateParse,endDateParse);
+        LocalDate endDateParse = LocalDate.parse(endDate);
+        Chambre fetchedChambre = trouverChambre(roomId, startDateParse, endDateParse);
+        if (fetchedChambre == null) {
+            System.out.println("Room is not available for the selected dates.");
+            return;
+        }
+
+        Reservation reservation = new Reservation(fetchedClient, fetchedChambre, startDateParse, endDateParse);
+        reservation.setId(reservationId);
         reservationDaoImpl.updateReservation(reservation);
     }
+
     public void deleteReservation() {
         System.out.println("Enter the reservation id: ");
         int reservationId = scanner.nextInt();
         scanner.nextLine();
         reservationDaoImpl.deleteReservation(reservationId);
     }
+
     public Reservation getReservationById() {
         System.out.println("Enter the reservation id: ");
         int reservationId = scanner.nextInt();
         return reservationDaoImpl.getReservationById(reservationId);
+    }
+    public List<Reservation> getAllReservations(){
+        return reservationDaoImpl.getAllReservations();
     }
 }

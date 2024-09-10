@@ -21,6 +21,7 @@ public class ChambreDaoImpl extends ChambreDao {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 int numero = rs.getInt("numero");
                 String typeStr = rs.getString("type");
                 boolean disponible = rs.getBoolean("isdisponible");
@@ -29,7 +30,7 @@ public class ChambreDaoImpl extends ChambreDao {
                 if (typeStr != null) {
                     type = RoomType.valueOf(typeStr.toUpperCase());
                 }
-                Chambre chambre = new Chambre(numero, type, disponible);
+                Chambre chambre = new Chambre(id,numero, type, disponible);
                 chambres.add(chambre);
             }
         } catch (SQLException sqlException) {
