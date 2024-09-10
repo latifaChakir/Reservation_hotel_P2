@@ -40,7 +40,7 @@ public class ClientService {
         String address = scanner.nextLine();
         System.out.println("Enter Client phone: ");
         String phone = scanner.nextLine();
-        Client client = new Client(name, age, address, phone);
+        Client client = new Client(id,name, age, address, phone);
         clientDaoImpl.updateClient(client);
     }
     public void deleteClient()  {

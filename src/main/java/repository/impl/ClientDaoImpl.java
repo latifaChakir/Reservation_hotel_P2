@@ -26,7 +26,7 @@ public class ClientDaoImpl extends ClientDao {
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
 
-                clients.add(new Client(name, age, address, phone));
+                clients.add(new Client(id,name, age, address, phone));
             }
         } catch (SQLException sqlException) {
             System.out.println("Error fetching clients: " + sqlException.getMessage());
@@ -46,12 +46,13 @@ public class ClientDaoImpl extends ClientDao {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
+                    int id = rs.getInt("id");
                     String name = rs.getString("name");
                     int age = rs.getInt("age");
                     String address = rs.getString("address");
                     String phone = rs.getString("phone");
 
-                    client = new Client(name, age, address, phone);
+                    client = new Client(id, name, age, address, phone);
                 }
             }
         } catch (SQLException sqlException) {

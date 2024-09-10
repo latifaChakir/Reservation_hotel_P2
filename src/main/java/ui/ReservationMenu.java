@@ -4,6 +4,7 @@ import bean.Client;
 import service.ChambreService;
 import service.ClientService;
 import service.HotelService;
+import service.ReservationService;
 
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class ReservationMenu {
     private ChambreMenu chambreMenu;
     private HotelMenu hotelMenu;
     private HotelService hotelService;
+    private ReservationService reservationService;
     public ReservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
         this.scanner = new Scanner(System.in);
         this.clientService = clientService;
@@ -23,6 +25,7 @@ public class ReservationMenu {
         this.chambreMenu = new ChambreMenu(chambreService);
         this.hotelService = new HotelService();
         this.hotelMenu=new HotelMenu(hotelService);
+        this.reservationService = new ReservationService();
        ;
     }
     public void reservationMenu()  {
@@ -32,10 +35,10 @@ public class ReservationMenu {
             System.out.println("3. Show Reservation By Id");
             System.out.println("4. Update Reservation By Id");
             System.out.println("5. Delete Reservation By Id");
-            System.out.println("6. Deleted Reservations");
-            System.out.println("7. Clients Menu");
-            System.out.println("8. Rooms Menu");
-            System.out.println("9. Hotel Menu");
+            System.out.println("6. Clients Menu");
+            System.out.println("7. Rooms Menu");
+            System.out.println("8. Hotel Menu");
+            System.out.println("9. EXIT");
             System.out.println("Enter your choice: ");
 
             int choice;
@@ -48,6 +51,7 @@ public class ReservationMenu {
 
             switch (choice) {
                 case 1:
+                    reservationService.saveReservation();
                     break;
                 case 2:
 
@@ -61,17 +65,18 @@ public class ReservationMenu {
                     System.out.println("Goodbye!");
                     break;
                 case 6:
-                    System.out.println("Goodbye!");
-                    break;
-                case 7:
                     clientMenu.clientMenu();
                     break;
-                case 8:
+                case 7:
                     chambreMenu.chambreMenu();
                     break;
-                case 9:
+                case 8:
                     hotelMenu.hotelMenu();
                     break;
+                case 9:
+                    System.out.println("Goodbye!");
+                    break;
+
             }
         }
     }

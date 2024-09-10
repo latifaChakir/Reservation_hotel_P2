@@ -31,7 +31,7 @@ public class HotelDaoImpl extends HotelDao {
         }
         return hotels;
     }
-        @Override
+    @Override
     public Hotel getHotelById(int hotelId) {
         Hotel hotel = null;
         String sql = "select * from hotel where hotel_id=?";
@@ -55,7 +55,6 @@ public class HotelDaoImpl extends HotelDao {
         }
         return hotel;
     }
-
     @Override
     public Hotel saveHotel(Hotel hotel) {
         String query="INSERT INTO hotel(name,address,phone) VALUES(?,?,?)";
@@ -72,7 +71,6 @@ public class HotelDaoImpl extends HotelDao {
         }
         return hotel;
     }
-
     @Override
     public void updateHotel(Hotel hotel) {
         String query="UPDATE hotel SET name=?,address=?,phone=? WHERE id=?";
@@ -91,7 +89,6 @@ public class HotelDaoImpl extends HotelDao {
         }
 
     }
-
     @Override
     public void deleteHotel(int hotelId) {
         String query="DELETE FROM hotel WHERE id=?";

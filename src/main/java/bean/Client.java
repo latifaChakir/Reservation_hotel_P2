@@ -32,6 +32,13 @@ public class Client {
         this.address = address;
         this.phone = phone;
     }
+    public Client(int id ,String name, int age, String address, String phone) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.phone = phone;
+        this.id = id;
+    }
     public String toString() {
         return "Client : {" +"client id :" +id+
                 ", clientName :" +name+" " +

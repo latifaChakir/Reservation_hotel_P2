@@ -10,6 +10,12 @@ public class Chambre {
         this.type=type;
         this.isDisponible=isDisponible;
     }
+    public Chambre(int id,int numero, RoomType type, boolean isDisponible) {
+        this.numero = numero;
+        this.type=type;
+        this.id=id;
+        this.isDisponible=isDisponible;
+    }
     public int getNumero() {
         return  numero;
     }
@@ -26,18 +32,20 @@ public class Chambre {
         this.isDisponible=true;
     }
 
-    public String toString(){
-        return  "Chambre {"
-                + "numero : "+numero+ "," +
-                " type : "+type+ ", " +
-                "isDisponible : "+isDisponible+'}';
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int chambreId) {
         this.id = chambreId;
+    }
+    @Override
+    public String toString() {
+        return "Chambre{" +
+                "id=" + id +
+                ", numero=" + numero +
+                ", type=" + type +
+                ", isDisponible=" + isDisponible +
+                '}';
     }
 }
