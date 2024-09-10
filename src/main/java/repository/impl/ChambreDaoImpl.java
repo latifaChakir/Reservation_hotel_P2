@@ -96,7 +96,6 @@ public class ChambreDaoImpl extends ChambreDao {
             pstmt.setBoolean(3, chambre.isDisponible());
             pstmt.setInt(4, chambre.getId());
 
-            // Execute update and check number of affected rows
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Chambre updated successfully!");

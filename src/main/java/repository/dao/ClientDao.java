@@ -1,8 +1,6 @@
 package repository.dao;
 
 import bean.Client;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public abstract class ClientDao {

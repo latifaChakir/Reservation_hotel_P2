@@ -51,7 +51,7 @@ public class ClientDaoImpl extends ClientDao {
                     String address = rs.getString("address");
                     String phone = rs.getString("phone");
 
-                    client = new Client(name, age, address, phone); // Assurez-vous d'avoir l'ID dans le constructeur
+                    client = new Client(name, age, address, phone);
                 }
             }
         } catch (SQLException sqlException) {
