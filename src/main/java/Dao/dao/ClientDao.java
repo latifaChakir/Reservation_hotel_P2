@@ -1,4 +1,4 @@
-package repository.dao;
+package Dao.dao;
 
 import bean.Client;
 import java.util.List;

@@ -1,9 +1,9 @@
-package repository.impl;
+package Dao.impl;
 
 import bean.Chambre;
 import bean.RoomType;
 import connection.ConnectionConfig;
-import repository.dao.ChambreDao;
+import Dao.dao.ChambreDao;
 
 import java.sql.*;
 import java.util.ArrayList;

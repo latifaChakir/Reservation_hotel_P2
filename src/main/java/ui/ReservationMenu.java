@@ -1,6 +1,4 @@
 package ui;
-
-import bean.Client;
 import service.ChambreService;
 import service.ClientService;
 import service.HotelService;
@@ -32,8 +30,8 @@ public class ReservationMenu {
         while (true) {
             System.out.println("1. Create Reservation");
             System.out.println("2. Show All Reservations");
-            System.out.println("3. Show Reservation By Id");
-            System.out.println("4. Update Reservation By Id");
+            System.out.println("3. Update Reservation By Id");
+            System.out.println("4. Show Reservation By Id");
             System.out.println("5. Delete Reservation By Id");
             System.out.println("6. Clients Menu");
             System.out.println("7. Rooms Menu");
@@ -53,13 +51,11 @@ public class ReservationMenu {
                 case 1:
                     reservationService.saveReservation();
                     break;
-                case 2:
-
+                case 2:reservationService.updateReservation();
                     break;
-                case 3:
-
+                case 3:reservationService.deleteReservation();
                     break;
-                case 4:
+                case 4:reservationService.getReservationById();
                      break;
                 case 5:
                     System.out.println("Goodbye!");

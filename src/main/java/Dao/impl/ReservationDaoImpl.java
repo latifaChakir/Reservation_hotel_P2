@@ -1,10 +1,10 @@
-package repository.impl;
+package Dao.impl;
 
 import bean.Chambre;
 import bean.Client;
 import bean.Reservation;
 import connection.ConnectionConfig;
-import repository.dao.ReservationDao;
+import Dao.dao.ReservationDao;
 
 import java.sql.*;
 import java.util.ArrayList;

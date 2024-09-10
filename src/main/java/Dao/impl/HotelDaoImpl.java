@@ -1,8 +1,8 @@
-package repository.impl;
+package Dao.impl;
 
 import bean.Hotel;
 import connection.ConnectionConfig;
-import repository.dao.HotelDao;
+import Dao.dao.HotelDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

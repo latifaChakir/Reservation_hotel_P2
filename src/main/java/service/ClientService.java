@@ -1,7 +1,7 @@
 package service;
 
 import bean.Client;
-import repository.impl.ClientDaoImpl;
+import Dao.impl.ClientDaoImpl;
 import java.util.Scanner;
 
 public class ClientService {

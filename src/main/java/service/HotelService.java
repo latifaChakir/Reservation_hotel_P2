@@ -1,7 +1,7 @@
 package service;
 
 import bean.Hotel;
-import repository.impl.HotelDaoImpl;
+import Dao.impl.HotelDaoImpl;
 
 import java.util.Scanner;
 

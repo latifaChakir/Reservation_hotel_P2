@@ -1,7 +1,5 @@
 package ui;
-
 import bean.Chambre;
-import bean.Client;
 import service.ChambreService;
 import service.ClientService;
 import service.HotelService;

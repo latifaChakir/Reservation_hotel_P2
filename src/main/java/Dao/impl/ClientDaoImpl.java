@@ -1,8 +1,8 @@
-package repository.impl;
+package Dao.impl;
 
 import bean.Client;
 import connection.ConnectionConfig;
-import repository.dao.ClientDao;
+import Dao.dao.ClientDao;
 
 import java.sql.*;
 import java.util.ArrayList;

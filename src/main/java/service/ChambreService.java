@@ -2,7 +2,7 @@ package service;
 
 import bean.Chambre;
 import bean.RoomType;
-import repository.impl.ChambreDaoImpl;
+import Dao.impl.ChambreDaoImpl;
 
 import java.util.Scanner;
 
