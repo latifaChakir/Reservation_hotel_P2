@@ -1,31 +1,30 @@
 package ui;
 
 import bean.Client;
+import bean.Hotel;
 import service.ChambreService;
 import service.ClientService;
 import service.HotelService;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
-public class ClientMenu {
+public class HotelMenu {
+    private HotelService hotelService;
     private ClientService clientService;
     private Scanner scanner;
     private ChambreService chambreService;
-    private HotelService hotelService;
-
-    public ClientMenu(ClientService clientService) {
-        this.clientService = clientService;
+    public HotelMenu(HotelService hotelService) {
+        this.hotelService = new HotelService();
         this.scanner = new Scanner(System.in);
         this.chambreService = new ChambreService();
-        this.hotelService = new HotelService();
+        this.clientService = new ClientService();
     }
-    public void clientMenu()  {
+    public void hotelMenu() {
         while (true) {
-            System.out.println("1. Create Client");
-            System.out.println("2. Update Client");
-            System.out.println("3. Delete Client by id");
-            System.out.println("4. Show Client by id");
+            System.out.println("1. Create HOTEL");
+            System.out.println("2. Update HOTEL");
+            System.out.println("3. Delete HOTEL by id");
+            System.out.println("4. Show HOTEL by id");
             System.out.println("5. Reservation Menu");
             System.out.print("Enter your choice: ");
             int choice;
@@ -38,17 +37,17 @@ public class ClientMenu {
 
             switch (choice) {
                 case 1:
-                   clientService.saveClient();
-                   break;
+                    hotelService.saveHotel();
+                    break;
                 case 2:
-                    clientService.updateClient();
+                    hotelService.updateHotel();
                     break;
                 case 3:
-                    clientService.deleteClient();
+                    hotelService.deleteHotel();
                     break;
                 case 4:
-                    Client client = clientService.getClientById();
-                    System.out.println("client :"+client.getName()+ ", age :"+client.getAge()+", address :"+client.getAddress());
+                    Hotel hotel = hotelService.getHotelByID();
+                    System.out.println("hotel name :"+hotel.getName()+ ", address :"+hotel.getAddress());
                     break;
                 case 5:
                     reservationMenu(clientService,chambreService,hotelService);
@@ -56,10 +55,8 @@ public class ClientMenu {
             }
         }
     }
-
     public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
         ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService);
         reservationMenu.reservationMenu();
     }
 }
-

@@ -3,6 +3,7 @@ package ui;
 import bean.Client;
 import service.ChambreService;
 import service.ClientService;
+import service.HotelService;
 
 import java.util.Scanner;
 
@@ -12,12 +13,16 @@ public class ReservationMenu {
     private ChambreService chambreService;
     private ClientMenu clientMenu;
     private ChambreMenu chambreMenu;
-    public ReservationMenu(ClientService clientService, ChambreService chambreService) {
+    private HotelMenu hotelMenu;
+    private HotelService hotelService;
+    public ReservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
         this.scanner = new Scanner(System.in);
         this.clientService = clientService;
         this.chambreService = chambreService;
         this.clientMenu = new ClientMenu(clientService);
         this.chambreMenu = new ChambreMenu(chambreService);
+        this.hotelService = new HotelService();
+        this.hotelMenu=new HotelMenu(hotelService);
        ;
     }
     public void reservationMenu()  {
@@ -30,7 +35,7 @@ public class ReservationMenu {
             System.out.println("6. Deleted Reservations");
             System.out.println("7. Clients Menu");
             System.out.println("8. Rooms Menu");
-            System.out.println("9. Exit");
+            System.out.println("9. Hotel Menu");
             System.out.println("Enter your choice: ");
 
             int choice;
@@ -63,6 +68,9 @@ public class ReservationMenu {
                     break;
                 case 8:
                     chambreMenu.chambreMenu();
+                    break;
+                case 9:
+                    hotelMenu.hotelMenu();
                     break;
             }
         }

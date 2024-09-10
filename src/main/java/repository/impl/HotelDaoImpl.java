@@ -58,7 +58,7 @@ public class HotelDaoImpl extends HotelDao {
 
     @Override
     public Hotel saveHotel(Hotel hotel) {
-        String query="INSERT INTO hotel(name,address,phone) VALUES(?,?,?,?,?)";
+        String query="INSERT INTO hotel(name,address,phone) VALUES(?,?,?)";
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, hotel.getName());

@@ -2,8 +2,6 @@ package service;
 
 import bean.Client;
 import repository.impl.ClientDaoImpl;
-
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ClientService {
@@ -45,7 +43,6 @@ public class ClientService {
         Client client = new Client(name, age, address, phone);
         clientDaoImpl.updateClient(client);
     }
-
     public void deleteClient()  {
         System.out.println("Enter Client id: ");
         int id = scanner.nextInt();

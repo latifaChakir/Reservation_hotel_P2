@@ -4,17 +4,20 @@ import bean.Chambre;
 import bean.Client;
 import service.ChambreService;
 import service.ClientService;
+import service.HotelService;
 
 import java.util.Scanner;
 
 public class ChambreMenu {
     private ChambreService chambreService;
     private ClientService clientService;
+    private HotelService hotelService;
     private Scanner scanner;
     public ChambreMenu(ChambreService chambreService) {
         this.chambreService = new ChambreService();
         this.scanner = new Scanner(System.in);
         this.clientService = new ClientService();
+        this.hotelService = new HotelService();
     }
     public void chambreMenu()  {
         while (true) {
@@ -47,14 +50,14 @@ public class ChambreMenu {
                     System.out.println("chambre :"+chambre.getNumero()+ ", type :"+chambre.getType());
                     break;
                 case 5:
-                    reservationMenu(clientService,chambreService);
+                    reservationMenu(clientService,chambreService,hotelService);
                     break;
             }
         }
     }
 
-    public void reservationMenu(ClientService clientService, ChambreService chambreService) {
-        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService);
+    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
+        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService,hotelService);
         reservationMenu.reservationMenu();
     }
 
