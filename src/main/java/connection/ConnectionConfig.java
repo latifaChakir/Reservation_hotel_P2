@@ -34,12 +34,10 @@ public class ConnectionConfig {
         return instance;
     }
 
-    // Méthode pour obtenir la connexion
     public Connection getConnection() {
         return connection;
     }
 
-    // Méthode pour fermer la connexion
     public static void closeConnection() {
         if (instance != null && instance.getConnection() != null) {
             try {
