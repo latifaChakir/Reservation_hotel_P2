@@ -78,17 +78,22 @@ public class ReservationDaoImpl extends ReservationDao {
 
     @Override
     public Reservation saveReservation(Reservation reservation) {
-        String sql="INSERT INTO reservations(id_client,id_chambre,date_debut,date_fin) VALUES(?,?,?,?)";
-        try(Connection conn= ConnectionConfig.getInstance().getConnection();
-        PreparedStatement ps=conn.prepareStatement(sql)){
-            Date dateDebut=Date.valueOf(reservation.getDateDebut());
-            Date dateFin=Date.valueOf(reservation.getDateFin());
-            ps.setLong(1,reservation.getClient().getId());
-            ps.setLong(2,reservation.getChambre().getId());
-            ps.setDate(3,dateDebut);
-            ps.setDate(4,dateFin);
-            ps.executeUpdate();
+        String sql = "INSERT INTO reservations(id_client, id_chambre, date_debut, date_fin, status_id) " +
+                "VALUES (?, ?, ?, ?, (SELECT id FROM reservations_status WHERE status = ?::reservation_status_enum))";
 
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            Date dateDebut = Date.valueOf(reservation.getDateDebut());
+            Date dateFin = Date.valueOf(reservation.getDateFin());
+
+            ps.setLong(1, reservation.getClient().getId());
+            ps.setLong(2, reservation.getChambre().getId());
+            ps.setDate(3, dateDebut);
+            ps.setDate(4, dateFin);
+            ps.setString(5, reservation.getStatus().toString());  // Passe "RESERVED" ou "CANCELLED"
+
+            ps.executeUpdate();
             System.out.println("Reservation added successfully");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -125,6 +130,18 @@ public class ReservationDaoImpl extends ReservationDao {
             ps.setInt(1,reservationId);
             ps.executeUpdate();
             System.out.println("Reservation successfully deleted");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void cancelReservation(int reservationId) {
+        String sql="UPDATE reservations set status_id=2 where id=?";
+        try(Connection conn=ConnectionConfig.getInstance().getConnection();
+            PreparedStatement ps=conn.prepareStatement(sql)){
+            ps.setInt(1,reservationId);
+            ps.executeUpdate();
+            System.out.println("status updated successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

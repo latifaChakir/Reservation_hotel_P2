@@ -29,10 +29,10 @@ public class ReservationMenu {
     public void reservationMenu()  {
         while (true) {
             System.out.println("1. Create Reservation");
-            System.out.println("2. Show All Reservations");
-            System.out.println("3. Update Reservation By Id");
-            System.out.println("4. Show Reservation By Id");
-            System.out.println("5. Delete Reservation By Id");
+            System.out.println("2. Update Reservation By Id");
+            System.out.println("3. Cancel Reservation By Id");
+            System.out.println("4. Show All Reservations");
+            System.out.println("5. Show Reservation By Id");
             System.out.println("6. Clients Menu");
             System.out.println("7. Rooms Menu");
             System.out.println("8. Hotel Menu");
@@ -53,7 +53,7 @@ public class ReservationMenu {
                     break;
                 case 2:reservationService.updateReservation();
                     break;
-                case 3:reservationService.deleteReservation();
+                case 3:reservationService.cancelReservation();
                     break;
                 case 4:reservationService.getReservationById();
                      break;

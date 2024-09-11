@@ -6,6 +6,8 @@ import bean.Reservation;
 import Dao.impl.ChambreDaoImpl;
 import Dao.impl.ClientDaoImpl;
 import Dao.impl.ReservationDaoImpl;
+import bean.ReservationStatus;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -79,7 +81,9 @@ public class ReservationService {
             System.out.println("Room is not available for the selected dates.");
             return null;
         }
-        Reservation reservation = new Reservation(clientChoisi, chambreChoisie, startDateParse, endDateParse);
+
+        ReservationStatus status = ReservationStatus.RESERVED;
+        Reservation reservation = new Reservation(clientChoisi, chambreChoisie, startDateParse, endDateParse,status);
         return reservationDaoImpl.saveReservation(reservation);
     }
 
@@ -113,16 +117,17 @@ public class ReservationService {
             return;
         }
 
-        Reservation reservation = new Reservation(fetchedClient, fetchedChambre, startDateParse, endDateParse);
+        ReservationStatus status = ReservationStatus.RESERVED;
+        Reservation reservation = new Reservation(fetchedClient, fetchedChambre, startDateParse, endDateParse,status);
         reservation.setId(reservationId);
         reservationDaoImpl.updateReservation(reservation);
     }
 
-    public void deleteReservation() {
+    public void cancelReservation() {
         System.out.println("Enter the reservation id: ");
         int reservationId = scanner.nextInt();
         scanner.nextLine();
-        reservationDaoImpl.deleteReservation(reservationId);
+        reservationDaoImpl.cancelReservation(reservationId);
     }
 
     public Reservation getReservationById() {

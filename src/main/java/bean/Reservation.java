@@ -8,11 +8,13 @@ public class Reservation {
     private Chambre chambre;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private ReservationStatus status;
     public Reservation() {}
-    public Reservation(Client client, Chambre chambre, LocalDate dateDebut, LocalDate dateFin) {
+    public Reservation(Client client, Chambre chambre, LocalDate dateDebut, LocalDate dateFin, ReservationStatus status) {
         this.client = client;
         this.chambre = chambre;
         this.dateDebut = dateDebut;
+        this.status = status;
         this.dateFin = dateFin;
 
     }
@@ -55,6 +57,14 @@ public class Reservation {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
     }
 
     @Override
