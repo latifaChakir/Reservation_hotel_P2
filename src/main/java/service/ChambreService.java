@@ -4,6 +4,7 @@ import bean.Chambre;
 import bean.RoomType;
 import Dao.impl.ChambreDaoImpl;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ChambreService {
@@ -13,6 +14,10 @@ public class ChambreService {
     public ChambreService() {
         this.chambreDaoImpl = new ChambreDaoImpl();
         this.scanner = new Scanner(System.in);
+    }
+
+    public List<Chambre> getAllChambre() {
+        return chambreDaoImpl.getAllChambres();
     }
 
     public void saveChambre() {

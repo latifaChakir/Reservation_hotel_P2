@@ -9,25 +9,27 @@ import service.StatisticService;
 import java.util.Scanner;
 
 public class StatisticMenu {
+    private StatisticMenu statisticMenu;
     private StatisticService statisticService;
     private HotelService hotelService;
     private ClientService clientService;
     private Scanner scanner;
     private ChambreService chambreService;
     public StatisticMenu(StatisticService statisticService) {
-        this.statisticService = statisticService;
+        this.statisticService = new StatisticService();
         scanner = new Scanner(System.in);
         chambreService = new ChambreService();
         hotelService = new HotelService();
         clientService = new ClientService();
+
     }
 
     public void staticsMenu() {
         while (true) {
             System.out.println("1. confirmed reservations");
             System.out.println("2. cancel reservations");
-            System.out.println("4.  Statistics");
-            System.out.println("5.Reservation Menu");
+            System.out.println("3.  Taux d' occupation");
+            System.out.println("4.Reservation Menu");
             System.out.print("your choice: ");
             int choice;
             try {
@@ -38,17 +40,15 @@ public class StatisticMenu {
             }
 
             switch (choice) {
-                case 1:
+                case 1:statisticService.reservationReservedCount();
                     break;
-                case 2:
+                case 2:statisticService.reservationCancelledCount();
                     break;
-                case 3:
+                case 3:statisticService.calculTauxOccupation();
                     break;
-                case 4:
+                case 4:reservationMenu(clientService,chambreService,hotelService);
                     break;
-                case 5:
-                    reservationMenu(clientService,chambreService,hotelService);
-                    break;
+
             }
         }
     }

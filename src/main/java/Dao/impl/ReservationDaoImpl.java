@@ -3,6 +3,7 @@ package Dao.impl;
 import bean.Chambre;
 import bean.Client;
 import bean.Reservation;
+import bean.ReservationStatus;
 import connection.ConnectionConfig;
 import Dao.dao.ReservationDao;
 
@@ -21,28 +22,42 @@ public class ReservationDaoImpl extends ReservationDao {
     @Override
     public List<Reservation> getAllReservations() {
         List<Reservation> reservations = new ArrayList<>();
-        String sql = "select * from reservations";
-        try(Connection conn=ConnectionConfig.getInstance().getConnection();
-        PreparedStatement ps=conn.prepareStatement(sql);){
-            ResultSet rs=ps.executeQuery();
-            while(rs.next()){
-                Reservation reservation=new Reservation();
-                int reservationId=rs.getInt("id");
-                int clientId=rs.getInt("id_client");
-                int chambreId=rs.getInt("id_chambre");
+        String sql = "SELECT r.*, rs.status FROM reservations r " +
+                "JOIN reservations_status rs ON r.status_id = rs.id";
+
+        try (Connection conn = ConnectionConfig.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Reservation reservation = new Reservation();
+                int reservationId = rs.getInt("id");
+                int clientId = rs.getInt("id_client");
+                int chambreId = rs.getInt("id_chambre");
+                String statusName = rs.getString("status");
+
+                ReservationStatus status = ReservationStatus.valueOf(statusName.toUpperCase());
+
+                reservation.setId(reservationId);
                 reservation.setDateDebut(rs.getDate("date_debut").toLocalDate());
                 reservation.setDateFin(rs.getDate("date_fin").toLocalDate());
-                Chambre chambre=chambreDaoImpl.getChambreById(chambreId);
-                Client client=clientDaoImpl.getClientById(clientId);
+                reservation.setStatus(status);
+
+                Chambre chambre = chambreDaoImpl.getChambreById(chambreId);
+                Client client = clientDaoImpl.getClientById(clientId);
                 reservation.setClient(client);
                 reservation.setChambre(chambre);
-                reservation.setId(reservationId);
+
                 reservations.add(reservation);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid status value from database", e);
         }
+
         return reservations;
     }
 

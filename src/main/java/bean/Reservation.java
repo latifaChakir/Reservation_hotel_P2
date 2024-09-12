@@ -75,8 +75,7 @@ public class Reservation {
                 ", chambre=" + chambre +
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
+                ", status=" + status +
                 '}';
     }
-
-
 }
