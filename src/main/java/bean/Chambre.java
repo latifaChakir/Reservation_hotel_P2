@@ -5,9 +5,11 @@ public class Chambre {
     private  int numero;
     private RoomType type;
     private boolean isDisponible;
-    public Chambre(int numero, RoomType type, boolean isDisponible) {
+    private double basePrice;
+    public Chambre(int numero, RoomType type, boolean isDisponible, double basePrice) {
         this.numero = numero;
         this.type=type;
+        this.basePrice=basePrice;
         this.isDisponible=isDisponible;
     }
     public Chambre(int id,int numero, RoomType type, boolean isDisponible) {
@@ -16,6 +18,15 @@ public class Chambre {
         this.id=id;
         this.isDisponible=isDisponible;
     }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+    }
+
     public int getNumero() {
         return  numero;
     }
@@ -39,6 +50,7 @@ public class Chambre {
     public void setId(int chambreId) {
         this.id = chambreId;
     }
+
     @Override
     public String toString() {
         return "Chambre{" +
@@ -46,6 +58,7 @@ public class Chambre {
                 ", numero=" + numero +
                 ", type=" + type +
                 ", isDisponible=" + isDisponible +
+                ", basePrice=" + basePrice +
                 '}';
     }
 }

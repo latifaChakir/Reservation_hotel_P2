@@ -24,11 +24,14 @@ public class ChambreService {
         System.out.println("enter the number of the room");
         int chambreNumber = scanner.nextInt();
         scanner.nextLine();
+        System.out.println("enter the price of room");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
         System.out.println("Enter the type of the room (e.g., SINGLE, DOUBLE, SUITE):");
         String chambreTypeStr = scanner.nextLine();
         RoomType chambreType = RoomType.valueOf(chambreTypeStr.toUpperCase());
         boolean isDisponible=true;
-        Chambre chambre = new Chambre(chambreNumber,chambreType,isDisponible);
+        Chambre chambre = new Chambre(chambreNumber,chambreType,isDisponible,price);
         chambreDaoImpl.saveChambre(chambre);
     }
     public Chambre updateChambre() {
@@ -47,6 +50,9 @@ public class ChambreService {
         System.out.println("Enter the new number of the room:");
         int chambreNumber = scanner.nextInt();
         scanner.nextLine();
+        System.out.println("Enter the price of room");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
 
         System.out.println("Enter the new type of the room (e.g., SINGLE, DOUBLE, SUITE):");
         String chambreTypeStr = scanner.nextLine();
@@ -59,7 +65,7 @@ public class ChambreService {
         }
         System.out.println("Is the room available (true/false)?");
         boolean isDisponible = scanner.nextBoolean();
-        Chambre updatedChambre = new Chambre(chambreNumber, chambreType, isDisponible);
+        Chambre updatedChambre = new Chambre(chambreNumber, chambreType, isDisponible,price);
         updatedChambre.setId(chambreId);
 
         chambreDaoImpl.updateChambre(updatedChambre);
