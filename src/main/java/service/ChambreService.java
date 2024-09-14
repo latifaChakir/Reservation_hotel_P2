@@ -1,7 +1,7 @@
 package service;
 
 import bean.Chambre;
-import bean.RoomType;
+import enums.RoomType;
 import Dao.impl.ChambreDaoImpl;
 
 import java.util.List;

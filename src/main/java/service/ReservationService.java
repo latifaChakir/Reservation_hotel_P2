@@ -6,7 +6,7 @@ import bean.Reservation;
 import Dao.impl.ChambreDaoImpl;
 import Dao.impl.ClientDaoImpl;
 import Dao.impl.ReservationDaoImpl;
-import bean.ReservationStatus;
+import enums.ReservationStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -137,5 +137,6 @@ public class ReservationService {
     }
     public List<Reservation> getAllReservations(){
         return reservationDaoImpl.getAllReservations();
+
     }
 }

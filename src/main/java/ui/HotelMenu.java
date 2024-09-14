@@ -4,17 +4,20 @@ import bean.Hotel;
 import service.ChambreService;
 import service.ClientService;
 import service.HotelService;
+import service.PrixDynamiqueService;
 
 import java.util.Scanner;
 
 public class HotelMenu {
     private HotelService hotelService;
+    private PrixDynamiqueService prixDynamiqueService;
     private ClientService clientService;
     private Scanner scanner;
     private ChambreService chambreService;
     public HotelMenu(HotelService hotelService) {
         this.hotelService = new HotelService();
         this.scanner = new Scanner(System.in);
+        this.prixDynamiqueService = new PrixDynamiqueService();
         this.chambreService = new ChambreService();
         this.clientService = new ClientService();
     }
@@ -49,13 +52,13 @@ public class HotelMenu {
                     System.out.println("hotel name :"+hotel.getName()+ ", address :"+hotel.getAddress());
                     break;
                 case 5:
-                    reservationMenu(clientService,chambreService,hotelService);
+                    reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
                     break;
             }
         }
     }
-    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
-        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService);
+    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService,PrixDynamiqueService prixDynamiqueService) {
+        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService,prixDynamiqueService);
         reservationMenu.reservationMenu();
     }
 }

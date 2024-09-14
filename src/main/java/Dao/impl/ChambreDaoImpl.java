@@ -1,7 +1,7 @@
 package Dao.impl;
 
 import bean.Chambre;
-import bean.RoomType;
+import enums.RoomType;
 import connection.ConnectionConfig;
 import Dao.dao.ChambreDao;
 
@@ -25,12 +25,13 @@ public class ChambreDaoImpl extends ChambreDao {
                 int numero = rs.getInt("numero");
                 String typeStr = rs.getString("type");
                 boolean disponible = rs.getBoolean("isdisponible");
+                double price = rs.getDouble("price");
 
                 RoomType type = null;
                 if (typeStr != null) {
                     type = RoomType.valueOf(typeStr.toUpperCase());
                 }
-                Chambre chambre = new Chambre(id,numero, type, disponible);
+                Chambre chambre = new Chambre(id,numero, type, disponible,price);
                 chambres.add(chambre);
             }
         } catch (SQLException sqlException) {

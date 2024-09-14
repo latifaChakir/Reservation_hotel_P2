@@ -3,21 +3,26 @@ package Dao.impl;
 import bean.Chambre;
 import bean.Client;
 import bean.Reservation;
-import bean.ReservationStatus;
+import enums.ReservationStatus;
 import connection.ConnectionConfig;
 import Dao.dao.ReservationDao;
+import service.PrixDynamiqueService;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationDaoImpl extends ReservationDao {
     private ClientDaoImpl clientDaoImpl;
     private ChambreDaoImpl chambreDaoImpl;
+    private PrixDynamiqueService prixDynamiqueService;
 
     public ReservationDaoImpl() {
         clientDaoImpl = new ClientDaoImpl();
         chambreDaoImpl = new ChambreDaoImpl();
+        prixDynamiqueService = new PrixDynamiqueService();
     }
     @Override
     public List<Reservation> getAllReservations() {
@@ -90,29 +95,83 @@ public class ReservationDaoImpl extends ReservationDao {
         }
         return reservation;
     }
-
-    @Override
-    public Reservation saveReservation(Reservation reservation) {
-        String sql = "INSERT INTO reservations(id_client, id_chambre, date_debut, date_fin, status_id) " +
-                "VALUES (?, ?, ?, ?, (SELECT id FROM reservations_status WHERE status = ?::reservation_status_enum))";
+    private boolean isRoomAvailable(long roomId, LocalDate startDate, LocalDate endDate) {
+        String sql = "SELECT COUNT(*) FROM reservations WHERE id_chambre = ? AND " +
+                "(date_debut < ? AND date_fin > ?)";
 
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            Date dateDebut = Date.valueOf(reservation.getDateDebut());
-            Date dateFin = Date.valueOf(reservation.getDateFin());
+            ps.setLong(1, roomId);
+            ps.setDate(2, Date.valueOf(endDate));
+            ps.setDate(3, Date.valueOf(startDate));
 
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 0; // If count is 0, room is available
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking room availability", e);
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public Reservation saveReservation(Reservation reservation) {
+        if (!isRoomAvailable(reservation.getChambre().getId(), reservation.getDateDebut(), reservation.getDateFin())) {
+            throw new RuntimeException("La chambre n'est pas disponible pour les dates sélectionnées.");
+        }
+
+        String sql = "INSERT INTO reservations(id_client, id_chambre, date_debut, date_fin, status_id, total_price) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet generatedKeys = null;
+
+        try {
+            conn = ConnectionConfig.getInstance().getConnection();
+            ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            // Calculate total price
+            BigDecimal totalPrice = prixDynamiqueService.calculeTotalPrice(reservation);
+            reservation.setTotal_price(totalPrice);
+
+            // Set query parameters
             ps.setLong(1, reservation.getClient().getId());
             ps.setLong(2, reservation.getChambre().getId());
-            ps.setDate(3, dateDebut);
-            ps.setDate(4, dateFin);
-            ps.setString(5, reservation.getStatus().toString());  // Passe "RESERVED" ou "CANCELLED"
+            ps.setDate(3, Date.valueOf(reservation.getDateDebut()));
+            ps.setDate(4, Date.valueOf(reservation.getDateFin()));
+            ps.setInt(5, 1); // Default reservation status (1 = new reservation)
+            ps.setBigDecimal(6, totalPrice);
+            System.out.println("Reservation added successfully, total price: " + totalPrice);
 
-            ps.executeUpdate();
-            System.out.println("Reservation added successfully");
+            int rowsInserted = ps.executeUpdate();
+
+            if (rowsInserted == 0) {
+                throw new RuntimeException("Failed to insert reservation");
+            }
+
+            // Retrieve the generated ID
+            generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                reservation.setId(generatedKeys.getInt(1));
+            } else {
+                throw new RuntimeException("Failed to retrieve generated ID for reservation");
+            }
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while adding reservation", e);
+        } finally {
+            // Close resources in reverse order
+            if (generatedKeys != null) try { generatedKeys.close(); } catch (SQLException e) { /* ignore */ }
+            if (ps != null) try { ps.close(); } catch (SQLException e) { /* ignore */ }
+            if (conn != null) ConnectionConfig.closeConnection(conn);
         }
+
         return reservation;
     }
 

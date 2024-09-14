@@ -1,5 +1,7 @@
 package bean;
 
+import enums.RoomType;
+
 public class Chambre {
     private int id;
     private  int numero;
@@ -9,6 +11,13 @@ public class Chambre {
     public Chambre(int numero, RoomType type, boolean isDisponible, double basePrice) {
         this.numero = numero;
         this.type=type;
+        this.basePrice=basePrice;
+        this.isDisponible=isDisponible;
+    }
+    public Chambre(int id,int numero, RoomType type, boolean isDisponible, double basePrice) {
+        this.numero = numero;
+        this.type=type;
+        this.id=id;
         this.basePrice=basePrice;
         this.isDisponible=isDisponible;
     }

@@ -9,12 +9,14 @@ public class ReservationMenu {
     private ChambreService chambreService;
     private ClientMenu clientMenu;
     private ChambreMenu chambreMenu;
+    private PrixDynamiqueMenu prixDynamiqueMenu;
+    private PrixDynamiqueService prixDynamiqueService;
     private HotelMenu hotelMenu;
     private StatisticMenu statisticMenu;
     private StatisticService statisticService;
     private HotelService hotelService;
     private ReservationService reservationService;
-    public ReservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
+    public ReservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService,PrixDynamiqueService prixDynamiqueService) {
         this.scanner = new Scanner(System.in);
         this.clientService = clientService;
         this.chambreService = chambreService;
@@ -24,6 +26,8 @@ public class ReservationMenu {
         this.hotelMenu=new HotelMenu(hotelService);
         this.statisticMenu=new StatisticMenu(statisticService);
         this.reservationService = new ReservationService();
+        this.prixDynamiqueService = new PrixDynamiqueService();
+        this.prixDynamiqueMenu=new PrixDynamiqueMenu(prixDynamiqueService);
        ;
     }
     public void reservationMenu()  {
@@ -37,6 +41,7 @@ public class ReservationMenu {
             System.out.println("7. Rooms Menu");
             System.out.println("8. Hotel Menu");
             System.out.println("9. Statistics Menu");
+            System.out.println("10. Prix Dynamique Menu");
             System.out.println("Enter your choice: ");
 
             int choice;
@@ -71,6 +76,9 @@ public class ReservationMenu {
                     break;
                 case 9:
                     statisticMenu.staticsMenu();
+                    break;
+                case 10:
+                    prixDynamiqueMenu.prixDynamiqueMenu();
                     break;
 
             }

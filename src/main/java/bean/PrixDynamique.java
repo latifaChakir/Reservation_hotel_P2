@@ -1,40 +1,64 @@
 package bean;
 
-import java.util.HashMap;
-import java.util.Map;
+import enums.Days;
+import enums.Events;
+import enums.Saison;
+
+import java.math.BigDecimal;
 
 public class PrixDynamique {
-    private Map<String,Double> days_of_week_rates = new HashMap<String,Double>();
-    private Map<String, Double> events_rates=new HashMap<>();
-    private Map<String, Double> saisons_rates=new HashMap<>();
+    private Long id;
+    private Saison season;
+    private Days dayOfWeek;
+    private Events event;
+    private BigDecimal coefficient;
 
-    public PrixDynamique() {
-        days_of_week_rates.put("Saturday", 6.0);
-        days_of_week_rates.put("Sunday", 7.0);
-
-        events_rates.put("NEW_YEAR", 6.0);
-        events_rates.put("HOLIDAY", 7.0);
-
-        saisons_rates.put("SUMMER", 6.0);
-        saisons_rates.put("WINTER", 7.0);
-    }
-    public Map<String, Double> getDays_of_week() {
-        return days_of_week_rates;
-    }
-    public Map<String, Double> getevents_rates() {
-        return events_rates;
-    }
-    public Map<String, Double> getSaisons() {
-        return saisons_rates;
-    }
-    public void addDayRate(String day, double rate) {
-        days_of_week_rates.put(day, rate);
-    }
-    public void addEventRate(String event, double rate) {
-        events_rates.put(event, rate);
-    }
-    public void addSaisonRate(String saison, double rate) {
-        saisons_rates.put(saison, rate);
+    public PrixDynamique(Saison season, Days dayOfWeek, Events event, BigDecimal coefficient) {
+        this.season = season;
+        this.dayOfWeek = dayOfWeek;
+        this.event = event;
+        this.coefficient = coefficient;
     }
 
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Saison getSeason() {
+        return season;
+    }
+
+    public void setSeason(Saison season) {
+        this.season = season;
+    }
+
+    public Days getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(Days dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public Events getEvent() {
+        return event;
+    }
+
+    public void setEvent(Events event) {
+        this.event = event;
+    }
+
+    public BigDecimal getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(BigDecimal coefficient) {
+        this.coefficient = coefficient;
+    }
 }

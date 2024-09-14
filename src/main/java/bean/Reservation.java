@@ -1,5 +1,8 @@
 package bean;
 
+import enums.ReservationStatus;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Reservation {
@@ -9,6 +12,7 @@ public class Reservation {
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private ReservationStatus status;
+    private BigDecimal total_price;
     public Reservation() {}
     public Reservation(Client client, Chambre chambre, LocalDate dateDebut, LocalDate dateFin, ReservationStatus status) {
         this.client = client;
@@ -67,6 +71,14 @@ public class Reservation {
         this.status = status;
     }
 
+    public BigDecimal getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(BigDecimal total_price) {
+        this.total_price = total_price;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -76,6 +88,9 @@ public class Reservation {
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
                 ", status=" + status +
+                ", total_price=" + total_price +
                 '}';
     }
+
+
 }

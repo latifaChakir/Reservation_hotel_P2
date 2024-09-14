@@ -2,7 +2,7 @@ package service;
 
 import bean.Chambre;
 import bean.Reservation;
-import bean.ReservationStatus;
+import enums.ReservationStatus;
 
 import java.util.List;
 

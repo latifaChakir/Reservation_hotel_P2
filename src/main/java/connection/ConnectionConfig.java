@@ -6,43 +6,44 @@ import java.sql.SQLException;
 
 public class ConnectionConfig {
     private static ConnectionConfig instance;
-    private Connection connection;
+    private String databaseUrl;
+    private String user;
+    private String password;
 
-    private ConnectionConfig() throws SQLException {
-        String DATABASE_URL = System.getenv("DATABASE_URL");
-        String USER = System.getenv("USER");
-        String PASSWORD = System.getenv("PASSWORD");
+    private ConnectionConfig() {
+        this.databaseUrl = System.getenv("DATABASE_URL");
+        this.user = System.getenv("USER");
+        this.password = System.getenv("PASSWORD");
 
         try {
             Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             System.out.println("Driver PostgreSQL JDBC non trouvé : " + e.getMessage());
-            throw new SQLException(e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ConnectionConfig getInstance() {
+        if (instance == null) {
+            instance = new ConnectionConfig();
+        }
+        return instance;
+    }
+
+    public Connection getConnection() throws SQLException {
+        try {
+            Connection conn = DriverManager.getConnection(databaseUrl, user, password);
+            return conn;
         } catch (SQLException e) {
             System.out.println("Erreur de connexion à la base de données : " + e.getMessage());
             throw e;
         }
     }
 
-    public static ConnectionConfig getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new ConnectionConfig();
-        } else if (instance.getConnection().isClosed()) {
-            instance = new ConnectionConfig();
-        }
-        return instance;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public static void closeConnection() {
-        if (instance != null && instance.getConnection() != null) {
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
             try {
-                instance.getConnection().close();
-                System.out.println("Connexion fermée.");
+                conn.close();
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
             }

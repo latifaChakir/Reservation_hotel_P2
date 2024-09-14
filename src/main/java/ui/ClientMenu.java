@@ -1,9 +1,7 @@
 package ui;
 
 import bean.Client;
-import service.ChambreService;
-import service.ClientService;
-import service.HotelService;
+import service.*;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -13,12 +11,13 @@ public class ClientMenu {
     private Scanner scanner;
     private ChambreService chambreService;
     private HotelService hotelService;
-
+    private PrixDynamiqueService prixDynamiqueService;
     public ClientMenu(ClientService clientService) {
         this.clientService = clientService;
         this.scanner = new Scanner(System.in);
         this.chambreService = new ChambreService();
         this.hotelService = new HotelService();
+        this.prixDynamiqueService = new PrixDynamiqueService();
     }
     public void clientMenu()  {
         while (true) {
@@ -51,14 +50,14 @@ public class ClientMenu {
                     System.out.println("client :"+client.getName()+ ", age :"+client.getAge()+", address :"+client.getAddress());
                     break;
                 case 5:
-                    reservationMenu(clientService,chambreService,hotelService);
+                    reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
                     break;
             }
         }
     }
 
-    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
-        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService);
+    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService,PrixDynamiqueService prixDynamiqueService) {
+        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService, prixDynamiqueService);
         reservationMenu.reservationMenu();
     }
 }

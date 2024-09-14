@@ -1,10 +1,7 @@
 package ui;
 
 import bean.Hotel;
-import service.ChambreService;
-import service.ClientService;
-import service.HotelService;
-import service.StatisticService;
+import service.*;
 
 import java.util.Scanner;
 
@@ -15,10 +12,12 @@ public class StatisticMenu {
     private ClientService clientService;
     private Scanner scanner;
     private ChambreService chambreService;
+    private PrixDynamiqueService prixDynamiqueService;
     public StatisticMenu(StatisticService statisticService) {
         this.statisticService = new StatisticService();
         scanner = new Scanner(System.in);
         chambreService = new ChambreService();
+        prixDynamiqueService = new PrixDynamiqueService();
         hotelService = new HotelService();
         clientService = new ClientService();
 
@@ -46,14 +45,14 @@ public class StatisticMenu {
                     break;
                 case 3:statisticService.calculTauxOccupation();
                     break;
-                case 4:reservationMenu(clientService,chambreService,hotelService);
+                case 4:reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
                     break;
 
             }
         }
     }
-    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService) {
-        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService);
+    public void reservationMenu(ClientService clientService, ChambreService chambreService, HotelService hotelService, PrixDynamiqueService prixDynamiqueService) {
+        ReservationMenu reservationMenu = new ReservationMenu(clientService, chambreService, hotelService, prixDynamiqueService);
         reservationMenu.reservationMenu();
     }
 
