@@ -4,6 +4,7 @@ import bean.Chambre;
 import bean.Reservation;
 import enums.ReservationStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class StatisticService {
@@ -33,11 +34,12 @@ public class StatisticService {
         System.out.println("Nombre de réservations confirmées : " + cancelledReservations);
     }
 
-    public void calculTauxOccupation(){
+    public void calculTauxOccupation() {
         List<Reservation> reservations = reservationService.getAllReservations();
-        List<Chambre> chambres=chambreService.getAllChambre();
-        long totalRooms=chambres.size();
-        long ReservedRooms= reservations.stream().filter(reservation -> reservation.getStatus()==ReservationStatus.RESERVED)
+        List<Chambre> chambres = chambreService.getAllChambre();
+        long totalRooms = chambres.size();
+        long ReservedRooms = reservations.stream()
+                .filter(reservation -> reservation.getStatus() == ReservationStatus.RESERVED)
                 .map(Reservation::getChambre)
                 .distinct()
                 .count();
@@ -45,5 +47,16 @@ public class StatisticService {
         System.out.println("Reserved rooms : " + ReservedRooms);
         double tauxOccupation = ((double) ReservedRooms / totalRooms) * 100;
         System.out.println("Taux d'occupations : " + tauxOccupation);
+    }
+
+    public void calculateTotalRevenue() {
+        List<Reservation> reservations = reservationService.getAllReservations();
+
+        BigDecimal totalRevenue = reservations.stream()
+                .filter(reservation -> reservation.getStatus() == ReservationStatus.RESERVED)
+                .map(Reservation::getTotal_price)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println("Total revenue generated: " + totalRevenue + "DH");
     }
 }

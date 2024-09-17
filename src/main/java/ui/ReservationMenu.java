@@ -60,9 +60,9 @@ public class ReservationMenu {
                     break;
                 case 3:reservationService.cancelReservation();
                     break;
-                case 4:reservationService.getReservationById();
+                case 5:reservationService.getReservationById();
                      break;
-                case 5:
+                case 4:
                     reservationService.getAllReservations();
                     break;
                 case 6:

@@ -31,22 +31,20 @@ public class PrixDynamiqueService {
     }
 
     public BigDecimal calculeTotalPrice(Reservation reservation) {
-        BigDecimal totalPrice = BigDecimal.ZERO; // Start with zero
+        BigDecimal totalPrice = BigDecimal.ZERO;
         LocalDate startDate = reservation.getDateDebut();
         LocalDate endDate = reservation.getDateFin();
         Chambre chambre = reservation.getChambre();
 
         BigDecimal prixChambre = BigDecimal.valueOf(chambre.getBasePrice()); // Room base price
 
-        // Loop through each day in the reservation period
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            // Get dynamic pricing factors
             Saison saison = getSaison(date);
             Days dayOfWeek = Days.valueOf(date.getDayOfWeek().name());
             Events event = getEvent(date);
 
             BigDecimal coefficient = BigDecimal.valueOf(getCoefficient(saison, dayOfWeek, event));
-//
+
 //            System.out.println("Coefficient: " + coefficient);
 //            System.out.println("Room Base Price: " + prixChambre);
 
@@ -54,8 +52,6 @@ public class PrixDynamiqueService {
 
             totalPrice = totalPrice.add(dailyPrice);
         }
-
-        // Return the total price, rounded to two decimal places
         return totalPrice.setScale(2, RoundingMode.HALF_UP);
     }
     private Saison getSaison(LocalDate date) {

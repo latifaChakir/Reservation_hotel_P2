@@ -41,10 +41,12 @@ public class ReservationDaoImpl extends ReservationDao {
                 int clientId = rs.getInt("id_client");
                 int chambreId = rs.getInt("id_chambre");
                 String statusName = rs.getString("status");
+                BigDecimal TotalPrice = rs.getBigDecimal("total_price");
 
                 ReservationStatus status = ReservationStatus.valueOf(statusName.toUpperCase());
 
                 reservation.setId(reservationId);
+                reservation.setTotal_price(TotalPrice);
                 reservation.setDateDebut(rs.getDate("date_debut").toLocalDate());
                 reservation.setDateFin(rs.getDate("date_fin").toLocalDate());
                 reservation.setStatus(status);

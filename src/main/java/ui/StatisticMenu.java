@@ -27,8 +27,9 @@ public class StatisticMenu {
         while (true) {
             System.out.println("1. confirmed reservations");
             System.out.println("2. cancel reservations");
-            System.out.println("3.  Taux d' occupation");
-            System.out.println("4.Reservation Menu");
+            System.out.println("3. Taux d' occupation");
+            System.out.println("4. calculateTotalRevenue");
+            System.out.println("5. Reservation Menu");
             System.out.print("your choice: ");
             int choice;
             try {
@@ -45,7 +46,9 @@ public class StatisticMenu {
                     break;
                 case 3:statisticService.calculTauxOccupation();
                     break;
-                case 4:reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
+                case 4:statisticService.calculateTotalRevenue();
+                    break;
+                case 5:reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
                     break;
 
             }
