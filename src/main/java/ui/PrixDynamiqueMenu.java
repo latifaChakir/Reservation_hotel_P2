@@ -10,6 +10,7 @@ import service.HotelService;
 import service.PrixDynamiqueService;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -66,20 +67,35 @@ public class PrixDynamiqueMenu {
     }
 
     private void addPricingRule() {
-        System.out.println("Enter season (FALL, SUMMER, etc.):");
-        Saison season = parseEnum(scanner.nextLine(), Saison.class);
-        System.out.println("Enter day of the week (MONDAY, TUESDAY, SATURDAY, etc.):");
-        Days dayOfWeek = parseEnum(scanner.nextLine(), Days.class);
-        System.out.println("Enter event (FESTIVAL, HOLIDAY, NEW_YEAR, etc.):");
-        Events event = parseEnum(scanner.nextLine(), Events.class);
-        System.out.println("Enter multiplier ou coefficient:");
-        BigDecimal multiplier = scanner.nextBigDecimal();
-        scanner.nextLine();
+        try {
+            System.out.println("Enter season (FALL, SUMMER, etc.):");
+            Saison season = parseEnum(scanner.nextLine(), Saison.class);
 
-        PrixDynamique prixDynamique = new PrixDynamique(season, dayOfWeek, event, multiplier);
-        prixDynamiqueService.addPricingRule(prixDynamique);
+            System.out.println("Enter day of the week (MONDAY, TUESDAY, SATURDAY, etc.):");
+            Days dayOfWeek = parseEnum(scanner.nextLine(), Days.class);
+
+            System.out.println("Enter event (FESTIVAL, HOLIDAY, NEW_YEAR, etc.):");
+            Events event = parseEnum(scanner.nextLine(), Events.class);
+
+            BigDecimal multiplier = null;
+            while (multiplier == null) {
+                try {
+                    System.out.println("Enter multiplier or coefficient (use '.' as decimal separator):");
+                    multiplier = scanner.nextBigDecimal();
+                    scanner.nextLine();  // Clear the buffer after reading BigDecimal
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid decimal number.");
+                    scanner.next();  // Clear the invalid input from the scanner
+                }
+            }
+
+            PrixDynamique prixDynamique = new PrixDynamique(season, dayOfWeek, event, multiplier);
+            prixDynamiqueService.addPricingRule(prixDynamique);
+
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
     }
-
 //    private void updatePricingRule() {
 //        // Display all pricing rules
 //        displayAllPricingRules();

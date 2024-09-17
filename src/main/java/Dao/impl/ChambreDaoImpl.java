@@ -56,12 +56,13 @@ public class ChambreDaoImpl extends ChambreDao {
                     int numero = rs.getInt("numero");
                     String typeStr = rs.getString("type");
                     boolean disponible = rs.getBoolean("isdisponible");
+                    double price = rs.getDouble("price");
 
                     RoomType type = null;
                     if (typeStr != null) {
                         type = RoomType.valueOf(typeStr.toUpperCase());
                     }
-                    chambre = new Chambre(id,numero, type, disponible);
+                    chambre = new Chambre(id,numero, type, disponible,price);
                 }
             }
         } catch (SQLException sqlException) {
@@ -73,13 +74,14 @@ public class ChambreDaoImpl extends ChambreDao {
 
     @Override
     public void saveChambre(Chambre chambre) {
-        String query = "INSERT INTO chambre (numero, type, isdisponible) VALUES (?, ?::chambre_type, ?)";
+        String query = "INSERT INTO chambre (numero, type, isdisponible,price) VALUES (?, ?::chambre_type, ?,?)";
 
         try (Connection conn = ConnectionConfig.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, chambre.getNumero());
             pstmt.setString(2, chambre.getType().toString());
             pstmt.setBoolean(3, chambre.isDisponible());
+            pstmt.setDouble(4,chambre.getBasePrice());
             pstmt.executeUpdate();
 
             System.out.println("Chambre saved successfully!");

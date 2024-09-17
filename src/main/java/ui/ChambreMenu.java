@@ -5,6 +5,7 @@ import service.ClientService;
 import service.HotelService;
 import service.PrixDynamiqueService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ChambreMenu {
@@ -26,7 +27,8 @@ public class ChambreMenu {
             System.out.println("2. Update room");
             System.out.println("3. Delete room by id");
             System.out.println("4. Show room by id");
-            System.out.println("5. Menu Reservation");
+            System.out.println("5. Show all rooms");
+            System.out.println("6. Menu Reservation");
             System.out.print("Enter your choice: ");
             int choice;
             try {
@@ -48,9 +50,15 @@ public class ChambreMenu {
                     break;
                 case 4:
                     Chambre chambre = chambreService.getChambreById();
-                    System.out.println("chambre :"+chambre.getNumero()+ ", type :"+chambre.getType());
+                    System.out.println("chambre :"+chambre.getNumero()+ ", type :"+chambre.getType()+ ",price :"+chambre.getBasePrice());
                     break;
                 case 5:
+                    List<Chambre> chambres = chambreService.getAllChambre();
+                    for (Chambre chambre1 : chambres) {
+                        System.out.println(chambre1);
+                    }
+                    break;
+                case 6:
                     reservationMenu(clientService,chambreService,hotelService,prixDynamiqueService);
                     break;
             }

@@ -9,6 +9,8 @@ import Dao.impl.ReservationDaoImpl;
 import enums.ReservationStatus;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -60,13 +62,40 @@ public class ReservationService {
         System.out.println("Enter the room id: ");
         int roomId = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Enter the start date (yyyy-mm-dd): ");
-        String startdate = scanner.nextLine();
-        System.out.println("Enter the end date (yyyy-mm-dd): ");
-        String endDate = scanner.nextLine();
 
-        LocalDate startDateParse = LocalDate.parse(startdate);
-        LocalDate endDateParse = LocalDate.parse(endDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+
+        System.out.print("Enter the start date (yyyy-MM-dd): ");
+        LocalDate startDateParse;
+        while (true) {
+            try {
+                startDateParse = LocalDate.parse(scanner.nextLine(), formatter);
+                if (startDateParse.isBefore(now)) {
+                    System.out.println("Start date must be today or later. Please enter a valid start date.");
+                } else {
+                    break;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid start date. Please enter the date in the format yyyy-MM-dd.");
+            }
+        }
+
+        System.out.print("Enter the end date (yyyy-MM-dd): ");
+        LocalDate endDateParse;
+        while (true) {
+            try {
+                endDateParse = LocalDate.parse(scanner.nextLine(), formatter);
+                if (endDateParse.isBefore(startDateParse)) {
+                    System.out.println("End date cannot be before the start date. Please enter a valid end date.");
+                } else {
+                    break;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid end date. Please enter the date in the format yyyy-MM-dd.");
+            }
+        }
+
         Chambre chambreChoisie = null;
         Client clientChoisi = null;
 
@@ -83,7 +112,7 @@ public class ReservationService {
         }
 
         ReservationStatus status = ReservationStatus.RESERVED;
-        Reservation reservation = new Reservation(clientChoisi, chambreChoisie, startDateParse, endDateParse,status);
+        Reservation reservation = new Reservation(clientChoisi, chambreChoisie, startDateParse, endDateParse, status);
         return reservationDaoImpl.saveReservation(reservation);
     }
 
@@ -94,6 +123,7 @@ public class ReservationService {
         System.out.println("Enter the client id: ");
         int clientId = scanner.nextInt();
         scanner.nextLine();
+
         Client fetchedClient = null;
         try {
             fetchedClient = clientDaoImpl.getClientById(clientId);
@@ -104,13 +134,43 @@ public class ReservationService {
         System.out.println("Enter the room number: ");
         int roomId = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Enter the start date (yyyy-mm-dd): ");
-        String startdate = scanner.nextLine();
-        System.out.println("Enter the end date (yyyy-mm-dd): ");
-        String endDate = scanner.nextLine();
 
-        LocalDate startDateParse = LocalDate.parse(startdate);
-        LocalDate endDateParse = LocalDate.parse(endDate);
+        // Format pour la saisie des dates
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+
+        // Saisie et validation de la date de début
+        System.out.print("Enter the start date (yyyy-MM-dd): ");
+        LocalDate startDateParse;
+        while (true) {
+            try {
+                startDateParse = LocalDate.parse(scanner.nextLine(), formatter);
+                if (startDateParse.isBefore(now)) {
+                    System.out.println("Start date must be today or later. Please enter a valid start date.");
+                } else {
+                    break;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid start date. Please enter the date in the format yyyy-MM-dd.");
+            }
+        }
+
+        // Saisie et validation de la date de fin
+        System.out.print("Enter the end date (yyyy-MM-dd): ");
+        LocalDate endDateParse;
+        while (true) {
+            try {
+                endDateParse = LocalDate.parse(scanner.nextLine(), formatter);
+                if (endDateParse.isBefore(startDateParse)) {
+                    System.out.println("End date cannot be before the start date. Please enter a valid end date.");
+                } else {
+                    break;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid end date. Please enter the date in the format yyyy-MM-dd.");
+            }
+        }
+
         Chambre fetchedChambre = trouverChambre(roomId, startDateParse, endDateParse);
         if (fetchedChambre == null) {
             System.out.println("Room is not available for the selected dates.");
@@ -118,7 +178,7 @@ public class ReservationService {
         }
 
         ReservationStatus status = ReservationStatus.RESERVED;
-        Reservation reservation = new Reservation(fetchedClient, fetchedChambre, startDateParse, endDateParse,status);
+        Reservation reservation = new Reservation(fetchedClient, fetchedChambre, startDateParse, endDateParse, status);
         reservation.setId(reservationId);
         reservationDaoImpl.updateReservation(reservation);
     }
