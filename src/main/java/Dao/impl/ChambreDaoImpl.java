@@ -83,7 +83,6 @@ public class ChambreDaoImpl extends ChambreDao {
             pstmt.setBoolean(3, chambre.isDisponible());
             pstmt.setDouble(4,chambre.getBasePrice());
             pstmt.executeUpdate();
-
             System.out.println("Chambre saved successfully!");
         } catch (SQLException sqlException) {
             System.out.println("Error saving chambre: " + sqlException.getMessage());
